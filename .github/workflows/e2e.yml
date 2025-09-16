@@ -19,18 +19,21 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install deps
+      # 1) install root deps (playwright, concurrently, tsx, etc.)
+      - name: Install root deps
         run: npm ci
+
+      # 2) install frontend deps (vite, react, @vitejs/plugin-react, etc.)
+      - name: Install frontend deps
+        run: npm --prefix frontend ci
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # If your Playwright config uses `webServer` with `concurrently`,
-      # this single command is enough:
+      # 3) run tests with extra logging for the webServer startup
       - name: Run E2E tests (Chromium)
-        run: npx playwright test --project=chromium
+        run: DEBUG=pw:webserver npx playwright test --project=chromium
 
-      # Always upload the HTML report, traces, videos for debugging
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
