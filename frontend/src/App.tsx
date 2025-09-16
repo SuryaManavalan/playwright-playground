@@ -32,7 +32,7 @@ function App() {
 
   return (
     <>
-      <h1>Fullstack App</h1>
+      <h1>Full-Stack App</h1>
 
       <div className="form">
         <form onSubmit={addItem}>
